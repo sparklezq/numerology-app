@@ -13,6 +13,9 @@
   display: inline-block;
   text-shadow: 0 0 10px rgba(247, 250, 252, 0.2),
                0 0 20px rgba(247, 250, 252, 0.1);
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .title::after {

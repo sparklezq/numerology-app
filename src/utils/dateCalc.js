@@ -67,4 +67,5 @@ function reducedSum(num) {
     return { name, birthdate, currentDate, age, birthpath, minor, cycleYear, cycleMonth, cycleDay };
   }
 
+  export { calculateCycleDay };
   

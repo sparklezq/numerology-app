@@ -17,6 +17,8 @@ export default function App() {
   const [isDev, setIsDev] = useState(() => {
     return localStorage.getItem('devMode') === 'true';
   });
+  const [tapCount, setTapCount] = useState(0);
+  const [lastTap, setLastTap] = useState(0);
 
   // Add keyboard shortcut for dev mode toggle (Ctrl + Alt + D)
   useEffect(() => {
@@ -127,6 +129,29 @@ export default function App() {
     localStorage.setItem('protectionPassed', 'true');
   };
 
+  const toggleDevMode = () => {
+    localStorage.setItem('devMode', 'true');
+    setIsDev(true);
+  };
+
+  const handleTitleTap = () => {
+    const now = Date.now();
+    if (now - lastTap > 500) { // Reset if more than 500ms between taps
+      setTapCount(1);
+    } else {
+      setTapCount(prev => prev + 1);
+      if (tapCount === 2) { // On third tap
+        setIsDev(prev => {
+          const newValue = !prev;
+          localStorage.setItem('devMode', newValue);
+          return newValue;
+        });
+        setTapCount(0);
+      }
+    }
+    setLastTap(now);
+  };
+
   if (!isProtectionPassed) {
     return <ProtectionLayer onPass={handleProtectionPass} isDev={isDev} />;
   }
@@ -134,7 +159,9 @@ export default function App() {
   return (
     <>
       <header className={styles.header}>
-        <h1 className={styles.title}>Calculatoria</h1>
+        <h1 className={styles.title} onTouchStart={handleTitleTap}>
+          Calculatoria
+        </h1>
       </header>
       <div className={styles.buttonContainer}>
         <button
