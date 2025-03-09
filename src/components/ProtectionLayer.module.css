@@ -58,4 +58,11 @@
 .button:hover {
   background: linear-gradient(135deg, #171a1b 0%, #1f2324 100%);
   transform: scale(1.01);
+}
+
+.small {
+  font-size: 0.9rem;
+  color: #94a3b8;
+  margin-top: 0.5rem;
+  font-style: italic;
 } 

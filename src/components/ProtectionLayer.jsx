@@ -59,7 +59,8 @@ export default function ProtectionLayer({ onPass, isDev }) {
             <p>Calculate cycle month and cycle day for:</p>
             <p>Birthdate: {testData.birthdate}</p>
             <p>Current date: {testData.currentDate}</p>
-            <p>Format answer as: cycleMonth, cycleDay</p>
+            <p>Format answer as: x-y, a-b</p>
+            <p className={styles.small}>Example: 9-4, 1-1</p>
             <p className={styles.attempts}>Attempts remaining: {3 - attempts}</p>
           </div>
         )}
@@ -68,7 +69,7 @@ export default function ProtectionLayer({ onPass, isDev }) {
             type="text"
             value={answer}
             onChange={(e) => setAnswer(e.target.value)}
-            placeholder="Enter your answer"
+            placeholder="Example: 9-4, 1-1"
             className={styles.input}
           />
           <button type="submit" className={styles.button}>
