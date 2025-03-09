@@ -3,18 +3,36 @@ import Form from './components/Form.jsx';
 import Dashboard from './components/Dashboard.jsx';
 import { loadCalculations, saveCalculations } from './utils/storage.js';
 import styles from './App.module.css';
-import logo from './assets/calculatoria-logo.svg';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('name');
   const [calculations, setCalculations] = useState([]);
+  const [showClearModal, setShowClearModal] = useState(false);
+  const [showFilterModal, setShowFilterModal] = useState(false);
 
   useEffect(() => {
     setCalculations(loadCalculations());
   }, []);
 
   const handleSubmit = (result) => {
-    const newCalcs = [...calculations, { ...result, confirmDelete: false }];
+    const isDateCalc = 'birthdate' in result;
+    
+    // Keep existing calculations of the other type
+    const existingOtherTypeCalcs = isDateCalc 
+      ? calculations.filter(calc => !('birthdate' in calc))
+      : calculations.filter(calc => 'birthdate' in calc);
+
+    // Keep existing calculations of the same type, excluding the newest one
+    const existingSameTypeCalcs = isDateCalc 
+      ? calculations.filter(calc => 'birthdate' in calc)
+      : calculations.filter(calc => !('birthdate' in calc));
+
+    const newCalcs = [
+      { ...result, confirmDelete: false },
+      ...existingSameTypeCalcs,
+      ...existingOtherTypeCalcs  // Keep the other type's calculations
+    ];
+    
     setCalculations(newCalcs);
     saveCalculations(newCalcs);
   };
@@ -33,7 +51,13 @@ export default function App() {
   };
 
   const handleClear = () => {
+    setShowClearModal(true);
+  };
+
+  const confirmClear = () => {
     setCalculations([]);
+    saveCalculations([]);
+    setShowClearModal(false);
   };
 
   const nameColumns = [
@@ -42,16 +66,22 @@ export default function App() {
       label: 'Parts',
       render: (item) =>
         item.nameParts
-          ? item.nameParts.map(p => `${p.part}: ${p.vowelNumber}-${p.consonantNumber}-${p.nameNumber}`).join(', ')
+          ? item.nameParts.map((p, i) => (
+              <div key={i} className={styles.cardLine}>
+                <span className={styles.bold}>{p.part}</span>: {p.vowelNumber}-{p.consonantNumber}-{p.nameNumber}
+              </div>
+            ))
           : 'N/A',
     },
     {
       key: 'combined',
       label: 'Combined',
       render: (item) =>
-        item.combined
-          ? `${item.combined.vowelNumber}-${item.combined.consonantNumber}-${item.combined.nameNumber}`
-          : 'N/A',
+        item.combined ? (
+          <div className={styles.cardLine}>
+            <span className={styles.bold}>Combined</span>: {item.combined.vowelNumber}-{item.combined.consonantNumber}-{item.combined.nameNumber}
+          </div>
+        ) : 'N/A',
       isLast: true,
     },
   ];
@@ -68,49 +98,72 @@ export default function App() {
     { key: 'cycleDay', label: 'Cycle Day', isLast: true },
   ];
 
-  const filteredDateData = calculations.filter((calc) => calc.birthdate);
-
   return (
     <>
       <header className={styles.header}>
-        <img src={logo} className={styles.logo} alt="Calculatoria Logo" />
-        <h1>Calculatoria</h1>
+        <h1 className={styles.title}>Calculatoria</h1>
       </header>
-      <Form onSubmit={handleSubmit} />
-      <div className={styles.tabButtons}>
+      <div className={styles.buttonContainer}>
         <button
           className={activeTab === 'name' ? styles.primaryTab : styles.secondaryTab}
           onClick={() => setActiveTab('name')}
         >
-          Name Tab
+          NameCalc
         </button>
         <button
           className={activeTab === 'date' ? styles.primaryTab : styles.secondaryTab}
           onClick={() => setActiveTab('date')}
         >
-          Date Tab
+          DateCalc
+        </button>
+        {activeTab === 'date' && (
+          <button
+            className={styles.filterButton}
+            onClick={() => setShowFilterModal(true)}
+          >
+            Filter
+          </button>
+        )}
+        <button className={styles.clearButton} onClick={handleClear}>
+          Clear
         </button>
       </div>
+      <Form onSubmit={handleSubmit} activeTab={activeTab} />
       {activeTab === 'name' && (
         <Dashboard
-          title="Name Calculations"
           columns={nameColumns}
-          data={calculations}
+          data={calculations.filter(calc => !('birthdate' in calc))}
           onDelete={handleDelete}
           onClear={handleClear}
-          layout="card" // Switch to card layout
+          layout="card"
         />
       )}
       {activeTab === 'date' && (
         <Dashboard
-          title="Date Calculations"
           columns={dateColumns}
-          data={filteredDateData}
+          data={calculations.filter(calc => 'birthdate' in calc)}
           onDelete={handleDelete}
           onClear={handleClear}
           showFilter={true}
-          layout="table" // Keep table layout
+          showFilterModal={showFilterModal}
+          setShowFilterModal={setShowFilterModal}
+          layout="table"
         />
+      )}
+      {showClearModal && (
+        <div className={styles.modal}>
+          <div className={styles.modalContent}>
+            <p>By pressing Clear, you will delete all data for both tables.</p>
+            <div className={styles.modalButtons}>
+              <button className={styles.confirmButton} onClick={confirmClear}>
+                Confirm
+              </button>
+              <button className={styles.cancelButton} onClick={() => setShowClearModal(false)}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

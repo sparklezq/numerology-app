@@ -286,3 +286,73 @@
     font-size: 0.9rem;
   }
 }
+
+/* ... (previous styles unchanged until card styles) */
+
+/* Card Styles */
+.cardContainer {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.card {
+  background-color: #1f2324;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: clamp(1rem, 2vw, 1.5rem);
+  box-shadow: 0 0 8px rgba(209, 213, 219, 0.3);
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
+.cardItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.cardLine {
+  font-size: clamp(0.9rem, 1.8vw, 1rem);
+  color: #f7fafc;
+}
+
+.bold {
+  font-weight: 700;
+  color: #f7fafc;
+}
+
+/* Shared Delete Button */
+.deleteButton {
+  position: absolute;
+  right: 0.5rem;
+  top: 0.5rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  background: #1f2324;
+  color: #f7fafc;
+  border: 1px solid #d1d5db;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 4px rgba(209, 213, 219, 0.2);
+  padding: 0;
+}
+
+.deleteButton:hover {
+  background: #2a2e30;
+  transform: scale(1.1);
+  box-shadow: 0 0 8px rgba(209, 213, 219, 0.4);
+}
+
+/* ... (rest of the styles unchanged) */

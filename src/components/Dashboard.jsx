@@ -1,28 +1,23 @@
-import { useState } from 'react';
 import { clearCalculations } from '../utils/storage.js';
 import styles from './Dashboard.module.css';
+import { useState } from 'react';
 
 export default function Dashboard({
-  title,
   columns,
   data,
   onDelete,
   onClear,
   showFilter = false,
-  layout = 'table', // New prop: 'table' or 'card'
+  showFilterModal = false,
+  setShowFilterModal,
+  layout = 'table',
 }) {
-  const [showFilterModal, setShowFilterModal] = useState(false);
   const [visibleColumns, setVisibleColumns] = useState(
     Object.fromEntries(columns.map(col => [col.key, true]))
   );
 
   const toggleColumn = (key) => {
     setVisibleColumns((prev) => ({ ...prev, [key]: !prev[key] }));
-  };
-
-  const handleClear = () => {
-    clearCalculations();
-    onClear();
   };
 
   const renderCell = (item, col) => {
@@ -32,19 +27,6 @@ export default function Dashboard({
 
   return (
     <div>
-      <div className={styles.container}>
-        <h2>{title}</h2>
-        <div className={styles.buttonGroup}>
-          {showFilter && (
-            <button className={styles.filterButton} onClick={() => setShowFilterModal(true)}>
-              Filter Columns
-            </button>
-          )}
-          <button className={styles.clearButton} onClick={handleClear}>
-            Clear
-          </button>
-        </div>
-      </div>
       {layout === 'table' ? (
         <div className={styles.tableWrapper}>
           <table className={styles.table}>
@@ -85,8 +67,7 @@ export default function Dashboard({
             <div key={i} className={styles.card}>
               {columns.map((col) => (
                 <div key={col.key} className={styles.cardItem}>
-                  <span className={styles.cardLabel}>{col.label}:</span>
-                  <span className={styles.cardValue}>{renderCell(item, col)}</span>
+                  {renderCell(item, col)}
                   {col.isLast && (
                     <button className={styles.deleteButton} onClick={() => onDelete(i)}>
                       {item.confirmDelete ? 'Confirm' : 'X'}
