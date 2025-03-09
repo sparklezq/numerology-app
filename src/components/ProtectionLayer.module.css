@@ -1,0 +1,61 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #0f1112;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  background: #1a1d1e;
+  padding: 2rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  max-width: 90%;
+  width: 400px;
+  color: #f7fafc;
+}
+
+.question {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: #151718;
+  border-radius: 6px;
+}
+
+.attempts {
+  margin-top: 1rem;
+  color: #e2e8f0;
+  font-size: 0.9rem;
+}
+
+.input {
+  width: 100%;
+  padding: 0.75rem;
+  margin: 1rem 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: #1a1d1e;
+  color: #f7fafc;
+}
+
+.button {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #151718 0%, #171a1b 100%);
+  color: #f7fafc;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.button:hover {
+  background: linear-gradient(135deg, #171a1b 0%, #1f2324 100%);
+  transform: scale(1.01);
+} 

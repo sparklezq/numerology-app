@@ -3,12 +3,36 @@ import Form from './components/Form.jsx';
 import Dashboard from './components/Dashboard.jsx';
 import { loadCalculations, saveCalculations } from './utils/storage.js';
 import styles from './App.module.css';
+import ProtectionLayer from './components/ProtectionLayer.jsx';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('name');
   const [calculations, setCalculations] = useState([]);
   const [showClearModal, setShowClearModal] = useState(false);
   const [showFilterModal, setShowFilterModal] = useState(false);
+  const [isProtectionPassed, setIsProtectionPassed] = useState(() => {
+    // Check localStorage or you could use a more secure method
+    return localStorage.getItem('protectionPassed') === 'true';
+  });
+  const [isDev, setIsDev] = useState(() => {
+    return localStorage.getItem('devMode') === 'true';
+  });
+
+  // Add keyboard shortcut for dev mode toggle (Ctrl + Alt + D)
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.ctrlKey && e.altKey && e.key === 'd') {
+        setIsDev(prev => {
+          const newValue = !prev;
+          localStorage.setItem('devMode', newValue);
+          return newValue;
+        });
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   useEffect(() => {
     setCalculations(loadCalculations());
@@ -97,6 +121,15 @@ export default function App() {
     { key: 'cycleMonth', label: 'Cycle Month' },
     { key: 'cycleDay', label: 'Cycle Day', isLast: true },
   ];
+
+  const handleProtectionPass = () => {
+    setIsProtectionPassed(true);
+    localStorage.setItem('protectionPassed', 'true');
+  };
+
+  if (!isProtectionPassed) {
+    return <ProtectionLayer onPass={handleProtectionPass} isDev={isDev} />;
+  }
 
   return (
     <>
