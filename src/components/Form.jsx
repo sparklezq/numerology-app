@@ -35,12 +35,6 @@ export default function Form({ onSubmit, activeTab }) {
         console.error('Date calculation error:', error);
       }
     }
-
-    // Reset form
-    setName('');
-    setBirthdate('');
-    setCurrentDate('');
-    setUseToday(true);
   };
 
   return (
@@ -59,10 +53,10 @@ export default function Form({ onSubmit, activeTab }) {
               type="text"
               value={birthdate}
               onChange={(e) => setBirthdate(e.target.value)}
-              placeholder="DD/MM/YYYY"
+              placeholder="BirthDate dd/mm/yyyy"
               className={styles.input}
               pattern="\d{2}/\d{2}/\d{4}"
-              title="Enter date as DD/MM/YYYY"
+              title="Enter date as dd/mm/yyyy"
             />
             <input
               type="date"

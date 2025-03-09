@@ -48,10 +48,13 @@ function reducedSum(num) {
   export function calculateDate(name, birthdate, currentDate) {
     const [bDay, bMonth, bYear] = birthdate.split('/').map(Number);
     const [cDay, cMonth, cYear] = currentDate.split('/').map(Number);
+    
     if (!isValidDate(bDay, bMonth, bYear) || !isValidDate(cDay, cMonth, cYear))
       throw new Error('Invalid date');
+    
     const birthDate = new Date(bYear, bMonth - 1, bDay);
     const currDate = new Date(cYear, cMonth - 1, cDay);
+    
     if (currDate < birthDate) throw new Error('Current date must be >= birthdate');
     const age = cYear - bYear - (cMonth < bMonth || (cMonth === bMonth && cDay < bDay) ? 1 : 0);
     const birthpath = reducedSum(bDay + bMonth + bYear);
@@ -60,6 +63,7 @@ function reducedSum(num) {
     const cycleYear = reducedSum(cycleAddon + cYear + 1);
     const cycleMonth = calculateCycleMonth(cycleYear, cMonth);
     const cycleDay = calculateCycleDay(cycleMonth, cDay);
+    
     return { name, birthdate, currentDate, age, birthpath, minor, cycleYear, cycleMonth, cycleDay };
   }
 

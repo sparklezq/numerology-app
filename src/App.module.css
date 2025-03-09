@@ -42,56 +42,55 @@
   margin-block: clamp(1rem, 2vw, 1.5rem);
 }
 
-.primaryTab {
+.primaryTab,
+.secondaryTab,
+.filterButton,
+.clearButton {
   padding: clamp(0.5rem, 1vw, 0.75rem) clamp(0.75rem, 1.5vw, 1.5rem);
-  border: 0.5px solid #e2e8f0;
+  border: 1px solid #e2e8f0; /* Increased from 0.5px to 1px */
   border-radius: 6px;
   font-size: clamp(0.8rem, 1.5vw, 1rem);
   font-weight: 500;
   cursor: pointer;
+  transition: all 0.3s ease;
+  -webkit-appearance: none; /* Fix for iOS default button styles */
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Add specific iOS styles */
+@supports (-webkit-touch-callout: none) {
+  .primaryTab,
+  .secondaryTab,
+  .filterButton,
+  .clearButton {
+    border-width: 1.5px; /* Even thicker border for iOS */
+    box-shadow: 0 0 0 1px rgba(226, 232, 240, 0.3); /* Additional border effect */
+  }
+}
+
+.primaryTab {
   background: linear-gradient(135deg, #151718 0%, #171a1b 100%);
   color: #f7fafc;
   opacity: 1; /* Active tab full opacity */
-  transition: background 0.3s ease, transform 0.2s ease, opacity 0.3s ease;
 }
 
 .secondaryTab {
-  padding: clamp(0.5rem, 1vw, 0.75rem) clamp(0.75rem, 1.5vw, 1.5rem);
-  border: 0.5px solid #e2e8f0;
-  border-radius: 6px;
-  font-size: clamp(0.8rem, 1.5vw, 1rem);
-  font-weight: 500;
-  cursor: pointer;
   background: #1a1d1e;
   color: #e2e8f0;
   opacity: 0.5; /* Inactive tab very opaque */
-  transition: background 0.3s ease, transform 0.2s ease, opacity 0.3s ease;
 }
 
 .filterButton {
-  padding: clamp(0.5rem, 1vw, 0.75rem) clamp(0.75rem, 1.5vw, 1.5rem);
-  border: 0.5px solid #e2e8f0;
-  border-radius: 6px;
-  font-size: clamp(0.8rem, 1.5vw, 1rem);
-  font-weight: 500;
-  cursor: pointer;
   background: linear-gradient(135deg, #151718 0%, #171a1b 100%);
   color: #f7fafc;
   opacity: 0.7; /* Less than active, more than inactive */
-  transition: background 0.3s ease, transform 0.2s ease, opacity 0.3s ease;
 }
 
 .clearButton {
-  padding: clamp(0.5rem, 1vw, 0.75rem) clamp(0.75rem, 1.5vw, 1.5rem);
-  border: 0.5px solid #e2e8f0;
-  border-radius: 6px;
-  font-size: clamp(0.8rem, 1.5vw, 1rem);
-  font-weight: 500;
-  cursor: pointer;
   background: linear-gradient(135deg, #151718 0%, #171a1b 100%);
   color: #f7fafc;
   opacity: 0.7; /* Matches Filter */
-  transition: background 0.3s ease, transform 0.2s ease, opacity 0.3s ease;
 }
 
 .primaryTab:hover,
@@ -191,7 +190,9 @@
   .secondaryTab,
   .filterButton,
   .clearButton {
-    padding: 0.4rem 0.8rem;
+    border-width: 1px; /* Ensure border is visible on small screens */
+    padding: 0.5rem 1rem;
     font-size: 0.85rem;
+    box-shadow: 0 0 0 1px rgba(226, 232, 240, 0.2); /* Subtle glow effect */
   }
 }

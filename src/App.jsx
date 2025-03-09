@@ -79,7 +79,7 @@ export default function App() {
       render: (item) =>
         item.combined ? (
           <div className={styles.cardLine}>
-            <span className={styles.bold}>Combined</span>: {item.combined.vowelNumber}-{item.combined.consonantNumber}-{item.combined.nameNumber}
+            <span className={styles.bold}>Total</span>: {item.combined.vowelNumber}-{item.combined.consonantNumber}-{item.combined.nameNumber}
           </div>
         ) : 'N/A',
       isLast: true,
