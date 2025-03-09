@@ -1,0 +1,92 @@
+.tabButtons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: clamp(0.5rem, 1.5vw, 0.75rem);
+    margin-bottom: 2rem;
+  }
+  
+  .primaryTab {
+    padding: clamp(0.5rem, 1.5vw, 0.75rem) clamp(1rem, 2vw, 1.5rem);
+    background: #151718;
+    color: #f7fafc;
+    border: none;
+    border-radius: 6px;
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    font-weight: 500;
+    cursor: pointer;
+    position: relative;
+    z-index: 0;
+    transition: transform 0.2s ease;
+  }
+  
+  .primaryTab:before {
+    content: "";
+    background: linear-gradient(45deg, #e2e8f0, #cbd5e0, #e2e8f0, #cbd5e0, #e2e8f0);
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    background-size: 400%;
+    filter: blur(5px);
+    z-index: -1;
+    animation: glowingTab 30s linear infinite;
+    border-radius: 8px;
+  }
+  
+  @keyframes glowingTab {
+    0% { background-position: 0 0; }
+    50% { background-position: 400% 0; }
+    100% { background-position: 0 0; }
+  }
+  
+  .primaryTab:after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #1a1d1e;
+    left: 0;
+    top: 0;
+    border-radius: 6px;
+    z-index: -1;
+  }
+  
+  .primaryTab:hover {
+    transform: scale(1.02);
+  }
+  
+  .secondaryTab {
+    padding: clamp(0.5rem, 1.5vw, 0.75rem) clamp(1rem, 2vw, 1.5rem);
+    background: linear-gradient(135deg, #151718 0%, #171a1b 100%);
+    color: #f7fafc;
+    border: 0.5px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  
+  .secondaryTab:hover {
+    background: linear-gradient(135deg, #171a1b 0%, #1f2324 100%);
+    transform: scale(1.01);
+  }
+  
+  @media (max-width: 768px) {
+    .tabButtons {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .primaryTab,
+    .secondaryTab {
+      width: 100%;
+      max-width: 250px;
+      padding: 0.5rem;
+      font-size: 0.9rem;
+    }
+  }
