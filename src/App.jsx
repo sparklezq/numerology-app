@@ -3,6 +3,7 @@ import Form from './components/Form.jsx';
 import Dashboard from './components/Dashboard.jsx';
 import { loadCalculations, saveCalculations } from './utils/storage.js';
 import styles from './App.module.css';
+import logo from './assets/calculatoria-logo.svg';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('name');
@@ -51,7 +52,7 @@ export default function App() {
         item.combined
           ? `${item.combined.vowelNumber}-${item.combined.consonantNumber}-${item.combined.nameNumber}`
           : 'N/A',
-      isLast: true, // Delete button stays here
+      isLast: true,
     },
   ];
 
@@ -71,7 +72,10 @@ export default function App() {
 
   return (
     <>
-      <h1>Calculatoria</h1>
+      <header className={styles.header}>
+        <img src={logo} className={styles.logo} alt="Calculatoria Logo" />
+        <h1>Calculatoria</h1>
+      </header>
       <Form onSubmit={handleSubmit} />
       <div className={styles.tabButtons}>
         <button
@@ -94,6 +98,7 @@ export default function App() {
           data={calculations}
           onDelete={handleDelete}
           onClear={handleClear}
+          layout="card" // Switch to card layout
         />
       )}
       {activeTab === 'date' && (
@@ -104,6 +109,7 @@ export default function App() {
           onDelete={handleDelete}
           onClear={handleClear}
           showFilter={true}
+          layout="table" // Keep table layout
         />
       )}
     </>

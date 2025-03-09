@@ -2,7 +2,15 @@ import { useState } from 'react';
 import { clearCalculations } from '../utils/storage.js';
 import styles from './Dashboard.module.css';
 
-export default function Dashboard({ title, columns, data, onDelete, onClear, showFilter = false }) {
+export default function Dashboard({
+  title,
+  columns,
+  data,
+  onDelete,
+  onClear,
+  showFilter = false,
+  layout = 'table', // New prop: 'table' or 'card'
+}) {
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [visibleColumns, setVisibleColumns] = useState(
     Object.fromEntries(columns.map(col => [col.key, true]))
@@ -37,39 +45,59 @@ export default function Dashboard({ title, columns, data, onDelete, onClear, sho
           </button>
         </div>
       </div>
-      <div className={styles.tableWrapper}>
-        <table className={styles.table}>
-          <thead>
-            <tr className={styles.tr}>
-              {columns.map((col) => (
-                visibleColumns[col.key] && (
-                  <th key={col.key} className={styles.th}>
-                    {col.label}
-                  </th>
-                )
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((item, i) => (
-              <tr key={i} className={styles.tr}>
+      {layout === 'table' ? (
+        <div className={styles.tableWrapper}>
+          <table className={styles.table}>
+            <thead>
+              <tr className={styles.tr}>
                 {columns.map((col) => (
                   visibleColumns[col.key] && (
-                    <td key={col.key} className={styles.td}>
-                      {renderCell(item, col)}
-                      {col.isLast && (
-                        <button className={styles.deleteButton} onClick={() => onDelete(i)}>
-                          {item.confirmDelete ? 'Confirm' : 'X'}
-                        </button>
-                      )}
-                    </td>
+                    <th key={col.key} className={styles.th}>
+                      {col.label}
+                    </th>
                   )
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {data.map((item, i) => (
+                <tr key={i} className={styles.tr}>
+                  {columns.map((col) => (
+                    visibleColumns[col.key] && (
+                      <td key={col.key} className={styles.td}>
+                        {renderCell(item, col)}
+                        {col.isLast && (
+                          <button className={styles.deleteButton} onClick={() => onDelete(i)}>
+                            {item.confirmDelete ? 'Confirm' : 'X'}
+                          </button>
+                        )}
+                      </td>
+                    )
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className={styles.cardContainer}>
+          {data.map((item, i) => (
+            <div key={i} className={styles.card}>
+              {columns.map((col) => (
+                <div key={col.key} className={styles.cardItem}>
+                  <span className={styles.cardLabel}>{col.label}:</span>
+                  <span className={styles.cardValue}>{renderCell(item, col)}</span>
+                  {col.isLast && (
+                    <button className={styles.deleteButton} onClick={() => onDelete(i)}>
+                      {item.confirmDelete ? 'Confirm' : 'X'}
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
       {showFilter && showFilterModal && (
         <div className={styles.modal}>
           <div className={styles.modalContent}>
