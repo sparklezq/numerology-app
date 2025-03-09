@@ -11,8 +11,7 @@ export default function App() {
   const [showClearModal, setShowClearModal] = useState(false);
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [isProtectionPassed, setIsProtectionPassed] = useState(() => {
-    // Check localStorage or you could use a more secure method
-    return localStorage.getItem('protectionPassed') === 'true';
+    return localStorage.getItem('protectionPassed') !== 'false'; // Default to true unless explicitly set to false
   });
   const [isDev, setIsDev] = useState(() => {
     return localStorage.getItem('devMode') === 'true';
